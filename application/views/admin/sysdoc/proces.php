@@ -1,0 +1,699 @@
+<?php
+    if(!isset($this->session->sessionId)){
+        header('Location: /');
+        exit();
+    }else{
+        $this->config->load('api');
+        $version  = $this->config->item('version');
+        $langs  = $this->config->item('langs');
+        $documenType = $this->config->item('documenType');
+        $level = $this->config->item('level');
+        $lang = $this->session->lang;
+        $this->lang->load('main', $lang);
+        $lang = $this->session->lang;
+$this->lang->load('main', $lang);
+$this->config->load('api');
+$api_host = $this->config->item('api_host');
+$api_port = $this->config->item('api_port');
+$doc_port = $this->config->item('doc_port');
+$apiHost  = $api_host.":".$api_port;
+$docHost  = $api_host.":".$doc_port;
+    }
+?>
+
+<html lang="ch">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title><?php echo $this->lang->line('title');?></title>
+    <meta itemprop="image" content="/statics/common/images/ico.png?ver=<?php echo $version;?>" />
+    <link href="/statics/images/common/ico.png?ver=<?php echo $version;?>" rel="Shortcut Icon" type="image/x-icon">
+    <link href="/statics/images/common/ico.png?ver=<?php echo $version;?>" rel="icon" type="image/x-icon">
+    <link href="/statics/style/common.css?ver=<?php echo $version;?>" rel="stylesheet"/>
+    <link href="/statics/style/font-awesome/css/font-awesome.css?ver=<?php echo $version;?>" rel="stylesheet">
+    <script src="/static/js/jquery.min.js?ver=<?php echo $version;?>"></script>
+    <script src="/statics/js/lib/code_beautify.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-treeview.js?ver=<?php echo $version;?>"></script>
+    <script src="/static/js/dms/action.js?ver=<?php echo $version;?>"></script>
+    <script src="/static/js/dms/toastr.js?ver=<?php echo $version;?>"></script>
+    <script src="/static/js/bootstrap-table.min.js"></script>
+    <script src="/static/js/bootstrap-table-zh-CN.min.js"></script>
+    <link href="/static/layui/css/layui.css"  rel="stylesheet">
+    <script src="/static/layui/layui.js"/></script>
+    <script src="/static/js/autocomplete.js"></script>
+    <script src="/static/js/dms/search.js"></script>
+    <script src="/static/js/dms/dmsList.js"></script>
+    
+    <link rel="stylesheet" href="/statics/style/skin/base/app_explorer.css?ver=<?php echo $version;?>"/>
+    <link rel="stylesheet" href="/statics/style/skin/win10.css?ver=<?php echo $version;?>" id='link-theme-style'/>
+    <link href="/static/css/proces.css"  rel="stylesheet">
+</head>
+
+<body style="overflow:hidden;">
+<link href="/static/css/jquery-confirm.min.css"  rel="stylesheet">
+<link href="/static/css/toastr.css"  rel="stylesheet">
+<div class="full-background"></div>
+<div class="frame-main">
+<div class='frame-right'>
+<div class='frame-right-main'>
+<div class="tools">
+<div class="tools-left tools-left-explorer " style="margin:10px">
+    <div class="kod-toolbar kod-toolbar-path fl-left">
+        <div class="hibtn select-button-show btn-group btn-group-sm fl-left mr-8">
+            <button  class="context-menu-item send btn btn-default ">
+                <i class="font-icon icon-send"></i><?php echo $this->lang->line('Send')?></button>
+            </div>
+    </div>
+</div>
+</div>
+<div class="tools">
+<div class="header-middle" id="search_condition_info">
+    <div class="gs_col">
+        <div class="bh_qgjc">
+                <div class="bh_g">
+                    <p class="qb_gjc" name="search-type-desc-prev">标题：</p>
+                    <div class="zx_x">
+                        <input id="title" class="zb_title" type="text" placeholder="请输入标题" name="title">
+                    </div>
+                </div>
+                <div class="blank"></div>
+        </div>
+        <div class="bh_qgjc">
+                <div class="bh_g">
+                    <p class="qb_gjc" name="search-type-desc-prev">申请用户：</p>
+                    <div class="zx_x">
+                        <input id="applyuser" class="zb_sousuo" type="text" name="applyuser" disabled>
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">申请部门：</p>
+                    <div class="zx_x">
+                        <input id="applydepartment" class="zb_sousuo" type="text" name="applydepartment" disabled>
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">申请日期：</p>
+                    <div class="zx_x">
+                        <input id="applyTime" class="time_sousuo" type="text" name="applyTime">
+                    </div>
+                </div>
+                <div class="blank"></div>
+        </div>
+        <div class="bh_qgjc">
+                <div class="bh_g">
+                    <p class="qb_gjc" name="search-type-desc-prev">说明：</p>
+                    <div class="zx_x" style="padding-right: 20px">
+                        <script id="container" name="content" type="text/plain">
+    </script>
+    <!-- 配置文件 -->
+    <script type="text/javascript" src="/statics/ueditor/ueditor.config.js"></script>
+    <!-- 编辑器源码文件 -->
+    <script type="text/javascript" src="/statics/ueditor/ueditor.all.js"></script>
+    <!-- 实例化编辑器 -->
+    <script type="text/javascript">
+        var ue = UE.getEditor('container');
+    </script>
+                    </div>
+                </div>
+                <div class="blank"></div>
+        </div>
+        <div class="bh_qgjc">
+                <div class="bh_g">
+                    <p class="qb_gjc" name="search-type-desc-prev">文档类型：</p>
+                    <div class="zx_x">
+                        <select id="documenType" class="zb_sousuo" ame="documenType">
+                            <?php 
+    if ($documenType) {
+    $tpl = "";
+    foreach ($documenType as $key => $value) {
+        $tpl .= "<option value='{$key}'>{$value}</option >";
+    }
+    echo $tpl;
+}
+    ?>
+                        </select>
+
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">密级：</p>
+                    <div class="zx_x">
+                        <select id="level" class="zb_sousuo" ame="level">
+                                                    <?php 
+    if ($level) {
+    $tpl = "";
+    foreach ($level as $key => $value) {
+        $tpl .= "<option value='{$key}'>{$value}</option >";
+    }
+    echo $tpl;
+}
+    ?></select>
+                    </div>
+                </div>
+                <div class="blank"></div>
+        </div>
+        <div class="bh_qgjc">
+                <div class="bh_g">
+                    <p class="qb_gjc" name="search-type-desc-prev">发布名称：</p>
+                    <div class="zx_x">
+
+                        <input id="pubname" class="fabu_sousuo" type="text" name="pubname">
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">发布编号：</p>
+                    <div class="zx_x">
+                        <input id="pubnaum" class="beta_sousuo" type="text" name="pubnaum">
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">版本号：</p>
+                    <div class="zx_x">
+                        <input id="vernum" class="beta_sousuo" type="text" name="vernum">
+                    </div>
+                </div>
+                <div class="blank"></div>
+        </div>
+        <div class="bh_qgjc">
+                <p class="qb_gjc" name="search-type-desc-prev">发布路径：</p>
+                    <div class="zx_x">
+                        <input id="pubPath" class="way_sousuo" type="text" name="pubPath" disabled><span onclick="dmsListObj.choosingPath(1000131);" style="font-size: 14px;cursor: pointer;" class="btn-right-radius">
+                                            <i class="font-icon icon-search"></i>
+                                        </span>
+                    </div>
+                    <p class="qb_gjc" name="search-type-desc-prev">归档路径：</p>
+                    <div class="zx_x">
+                        <input id="filingPath" class="way_sousuo" type="text" name="filingPath" disabled><span onclick="dmsListObj.choosingPath(1000131);" style="font-size: 14px;cursor: pointer;" class="btn-right-radius">
+                                            <i class="font-icon icon-search"></i>
+                                        </span>
+                    </div>
+                <div class="blank"></div>
+        </div>
+    </div>
+</div>
+<div style="clear:both"></div>
+</div>
+<div class="device-listStyle table-responsive" >   
+
+</div> 
+</div>      
+<div>
+
+    <div id="rightContent" class="file-continer file-list-list">        
+    <div id="centerDiv" class="tab-content">
+        <!-- 组织文档模块 start-->
+        <div role="tabpanel" class="tab-pane active" id="user">
+        <div class="frame-right-main">
+      
+            </div>
+        </div>
+    </div>
+    </div>
+</div>       
+        <!-- 组织文档模块 end-->
+<!--弹出窗口 修改文件夹 start-->
+<div class="modal fade" id="updateFolder" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document" style="border: 1px solid #cccccc;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ><?php echo $this->lang->line('Modify_folder')?></h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form class="form-horizontal">
+                        <input type="hidden" id="fldId">
+                        <input type="hidden" id="fldPrtId">
+                        <div class="form-group ">
+                            <label for="name" class="col-xs-2 control-label"><?php echo $this->lang->line('name')?>：</label>
+                            <div class="col-xs-8 ">
+                                <input type="text" class="form-control input-sm duiqi" name="name" id="nameFolderUpdate" maxlength="20" placeholder="">
+                                <p class="fldNameHip" style="color: red; display: none;margin-left: -20px;" id="noUpdateFolder" ><?php echo $this->lang->line('FldName')?></p>
+                                <p class="fldNameHip" style="color: red; display: none;margin-left: -20px;" id="existUpdateSameFldName"><?php echo $this->lang->line('SameFldName')?></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-xs-2 control-label"><?php echo $this->lang->line('description')?>：</label>
+                            <div class="col-xs-8 ">
+                                <textarea class="form-control input-sm duiqi" id="descriptionFldUpdate" maxlength="100" placeholder=""></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-xs btn-xs btn-white closeModel" data-dismiss="modal"><?php echo $this->lang->line('cancel')?></button>
+                <button type="button" class="btn btn-xs btn-xs btn-green" onclick="searchObj.updateFolder()"><?php echo $this->lang->line('save')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addAssignee" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: 60px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->lang->line('Add_user')?></h4>
+            </div>
+            <div >
+                <div class="container-fluid">
+                    <div id="permissionOrgTreeDiv" style='margin-left: 10px; overflow: hidden;'>
+                        <ul id="assigneeOrgTree" init="0" class="nav navbar-nav tableUl menuNav" style="width: 200px;"></ul>
+                    
+                    <div style="float: left;width: 326px; margin-left: 20px;">
+                        <input type="text" class="form-control input-sm duiqi" name="userName" id="searchAssignee" maxlength="20" placeholder="过滤用户组或用户的登录名或姓名" style="margin-left: 1px !important;margin-bottom: 10px;width: 300px !important;">
+                        <table contenteditable="false" id="assigneeTable" data-select-item-name="btSelectItem"  data-click-to-select="true" class="table table-striped table-bordered table-hover table-condensed footable tablex"  style="border: 0px solid transparent !important;">
+                            <thead>
+                            <tr>
+                                <th class="ui-state-default"  data-checkbox="true" data-align="center" data-valign="middle"><label><input class="a-radio" ><span class="b-radio"></span></label></th>
+                                <th class="ui-state-default" data-field="fullName" data-escape="true" data-align="center" data-valign="middle"><?php echo $this->lang->line('name')?></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-xs btn-xs btn-white closeModel" id="addAssigneeCloseModel" data-dismiss="modal"><?php echo $this->lang->line('cancel')?></button>
+                <button type="button" id="assigneeSubmitBtn1" onclick="searchObj.chooseUser(1);" class="btn btn-xs btn-xs btn-green"><?php echo $this->lang->line('Add')?></button>
+                <button type="button" id="assigneeSubmitBtn2" onclick="searchObj.chooseUser(2);" class="btn btn-xs btn-xs btn-green"><?php echo $this->lang->line('Add')?></button>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!--弹出窗口 设置权限 start -->
+<div class="modal fade" id="setPermission" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="margin-top: 60px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->lang->line('set_permission')?></h4>
+            </div>
+            <div>
+                <div class="container-fluid">
+
+                    <div id="setPermissionTabDiv" >
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出窗口 设置权限 end -->
+
+
+<!--弹出窗口 <?php echo $this->lang->line('operation')?>日志 start -->
+<div class="modal fade" id="showAccessLog" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="margin-bottom: 10px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->lang->line('operation_log')?></h4>
+            </div>
+            <div >
+                <div class="container-fluid">
+                    <table contenteditable="false" id="accessLogTab" data-select-item-name="btSelectItem"  data-click-to-select="true" class="table table-striped table-bordered table-hover table-condensed footable tablex"  style="border: 0px solid transparent !important;">
+                        <thead>
+                        <tr>
+                            <th class="ui-state-default" data-field="accessText" data-align="center" data-valign="middle" ><?php echo $this->lang->line('operation_type')?></th>
+                            <th class="ui-state-default" data-field="updatedByName" data-escape="true" data-align="center" data-valign="middle"><?php echo $this->lang->line('Username')?></th>
+                            <th class="ui-state-default" data-field="updatedDt" data-escape="true" data-align="center" data-valign="middle"><?php echo $this->lang->line('operation_time')?></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-xs btn-xs btn-white closeModel" data-dismiss="modal"><?php echo $this->lang->line('closeMode')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出窗口 <?php echo $this->lang->line('operation')?>日志 end -->
+
+<!--弹出窗口 添加索引卡 start -->
+<div class="modal fade" id="addIndexCard" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document" style="width:420px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->lang->line('Add_indexCard')?></h4>
+            </div>
+            <div >
+                <div class="container-fluid" >
+                    <div>
+                        <input type="text" class="form-control input-sm duiqi" name="userName" id="searchIndexCard" maxlength="20" placeholder="<?php echo $this->lang->line('Filter_indexCard')?>" style="margin-left: 1px !important;margin-top: 10px;margin-bottom: 10px;width: 300px !important;">
+                        <table contenteditable="false" id="indexCardTable" data-select-item-name="btSelectItem"  data-click-to-select="true" class="table table-striped table-bordered table-hover table-condensed footable tablex"  style="border: 0px solid transparent !important;">
+                            <thead>
+                            <tr>
+                                <th class="ui-state-default indexCard" data-radio="true" data-align="center" data-valign="middle"><label><span class="b-"></span></label></th>
+                                <th class="ui-state-default" data-field="name" data-escape="true" data-align="center" data-valign="middle"><?php echo $this->lang->line('name')?></th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-xs btn-xs btn-white closeModel IndexCard"  data-dismiss="modal"><?php echo $this->lang->line('cancel')?></button>
+                <button type="button" class="btn btn-xs btn-xs btn-green" onclick="appendIndexCardHtml()"><?php echo $this->lang->line('Add')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出窗口 添加索引卡 end -->
+
+
+<!--弹出窗口 分享 start-->
+<div class="modal fade" id="shareDialog" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ><?php echo $this->lang->line('share')?></h4>
+            </div>
+            <div id="shareDialogContainer" class="container-fluid" >
+                <input type="hidden" id="curlDocId">
+                <input type="hidden" id="curlRevId">
+                <input type="hidden" id="curlRevName">
+
+                <ul id="shareType" class="nav nav-tabs">
+                    <li class="active" share-type="outShare">
+                        <a href="#outShare" data-toggle="tab"><?php echo $this->lang->line('outShare')?></a>
+                    </li>
+                    <!--<li style="margin-left: 10px" share-type="innerShare">
+                        <a href="#innerShare" data-toggle="tab"><?php echo $this->lang->line('innerShare')?></a>
+                    </li>-->
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="outShare">
+                        <table style="margin-top: 10px;">
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('operation')?>:</span>
+                                </td>
+                                <td style="text-align: left">
+                                    <label><input id="r1" type="radio" value="1" name="operation_outShare" class="a-radio" checked><span class="b-radio"></span><?php echo $this->lang->line('Just_download')?></label>
+                                    <label><input id="r2" type="radio" value="2" name="operation_outShare" class="a-radio" style="margin-left: 10px;"><span class="b-radio"></span><?php echo $this->lang->line('online_view')?></label>
+                                    <!--<label><input id="r3" type="radio" value="3" name="operation_outShare"  class="a-radio" style="margin-left: 10px;"><span class="b-radio"></span><?php echo $this->lang->line('online_edit')?></label>-->
+                                </td>
+                            </tr>
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('permission')?>:</span>
+                                </td>
+                                <td style="text-align: left">
+                                    <label><input id="p1" type="radio" value="1" name="validateType" class="c-radio" checked><span class="b-radio"></span><?php echo $this->lang->line('encryption')?></label>
+                                    <label><input id="p2" type="radio" value="2" name="validateType" class="c-radio" style="margin-left: 40px;"><span class="b-radio"></span><?php echo $this->lang->line('open')?></label>
+                                </td>
+                            </tr>
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('download')?>:</span>
+                                </td>
+                                <td>
+                                    <input type="text" value="-1" name="downloadLimit" style="width: 40px">
+                                    <span style="margin-left: 10px"><?php echo $this->lang->line('downloadLimit')?></span>
+                                </td>
+                            </tr>
+                            <!--<tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('print')?>:</span>
+                                </td>
+                                <td>
+                                    <input type="text" value="-1" name="printLimit" style="width: 40px">
+                                    <span style="margin-left: 10px"><?php echo $this->lang->line('printLimit')?></span>
+                                </td>
+                            </tr>-->
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="innerShare">
+                        <table style="margin-top: 10px;">
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('operation')?>:</span>
+                                </td>
+                                <td style="text-align: left">
+                                    <label><input type="radio" value="1" name="operation_innerShare" class="a-radio" checked><span class="b-radio"></span><?php echo $this->lang->line('Just_download')?></label>
+                                    <label><input type="radio" value="2" name="operation_innerShare" class="a-radio" style="margin-left: 10px;"><span class="b-radio"></span><?php echo $this->lang->line('online_view')?></label>
+                                    <label><input type="radio" value="3" name="operation_innerShare" class="a-radio" style="margin-left: 10px;"><span class="b-radio"></span><?php echo $this->lang->line('online_edit')?></label>
+                                </td>
+                            </tr>
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('impower')?>:</span>
+                                </td>
+                                <td>
+                                    <input type="hidden" id="curlUserIds" name="curlUser" >
+                                    <input type="text" id="curlUserNames" name="curlUser" disabled>
+                                    <div style="float: right;padding-left: 8px;">
+                                        <span onclick="curlObj.showCurlUser()" style="font-size: 22px;cursor: pointer;" class=" btn-right-radius">
+                                            <i class="font-icon icon-search"></i>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('download')?>:</span>
+                                </td>
+                                <td>
+                                    <input type="text" value="-1" name="downloadLimit" style="width: 40px">
+                                    <span style="margin-left: 10px"><?php echo $this->lang->line('downloadLimit')?></span>
+                                </td>
+                            </tr>
+                            <tr style="height: 50px">
+                                <td style="width: 60px">
+                                    <span><?php echo $this->lang->line('print')?>:</span>
+                                </td>
+                                <td>
+                                    <input type="text" value="-1" name="printLimit" style="width: 40px">
+                                    <span style="margin-left: 10px"><?php echo $this->lang->line('printLimit')?></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="curlResultDiv" style="display: none">
+                    <table style="margin-top: 20px">
+                        <tr>
+                            <td valign="top"><span><?php echo $this->lang->line('Share_links')?>:</span></td>
+                            <td><textarea id="curlResult" style="width: 300px;height: 90px"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="dmsListObj.refreshRightList()" type="button" class="btn btn-xs btn-xs btn-white closeModel" data-dismiss="modal"><?php echo $this->lang->line('closeMode')?></button>
+                <button onclick="curlObj.createCurl()" type="button" class="btn btn-xs btn-xs btn-green" ><?php echo $this->lang->line('The_link')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出窗口 分享 end-->
+
+<div class="modal fade" id="shareSubmit" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="submit">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ><?php echo $this->lang->line('Approval')?></h4>
+            </div>
+            <div id="shareSubmitContainer" class="container-fluid" >
+                <input type="hidden" id="curlDocId">
+                <input type="hidden" id="type" value="1">
+                <input type="hidden" id="cacheId">
+                <ul id="shareType" class="nav nav-tabs">
+                    <li >
+                        <span><?php echo $this->lang->line('Sharing_Link_S')?></span>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active">
+                        <table style="margin-top: 10px;">
+                            <tr style="height: 40px">
+                                <td style="width: 100px">
+                                    <span><?php echo $this->lang->line('Sharing_Type')?>:</span>
+                                </td>
+                                <td style="text-align: left">
+                                    <span id="Sharing_Type"></span>
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td style="width: 100px">
+                                    <span><?php echo $this->lang->line('Number_D_Allowed')?>:</span>
+                                </td>
+                                <td style="text-align: left">
+                                    <span id="Number_D_Allowed"></span>
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td style="width: 100px">
+                                    <span><?php echo $this->lang->line('Number_P_Allowed')?>:</span>
+                                </td>
+                                <td>
+                                    <span id="Number_P_Allowed"></span>
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td style="width: 100px">
+                                    <span><?php echo $this->lang->line('S_approver')?>:</span>
+                                </td>
+                                <td>
+                                    <span id="approvedByIds"></span>
+                                </td>
+                            </tr>
+                            <tr style="height: 40px">
+                                <td style="width: 100px">
+                                    <span><?php echo $this->lang->line('Share_documents')?>:</span>
+                                </td>
+                                <td>
+                                    <p id="Share_documents"></p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-xs btn-xs btn-white closeModel" data-dismiss="modal" aria-label="Close"><?php echo $this->lang->line('closeMode')?></button>
+                <button onclick="curlObj.flowSubmit()" type="button" id="flowSubmit" class="btn btn-xs btn-xs btn-green"><?php echo $this->lang->line('Submission')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="choosingPath" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content" style="margin-top: 60px; border: 1px solid #ccc">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><?php echo $this->lang->line('choosingPath')?></h4>
+            </div>
+            <ul id="accordion" class="ztree" role="tablist" aria-multiselectable="true">
+                <li class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h3 class="panel-title"> <a id="orgDocAccordion" class="leftAccordion collapsed" module-type="3" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" right-href="orgdoc/index" aria-expanded="false" aria-controls="collapseTwo"><span id="folder-list-tree_3_switch" title="" class="button level0 switch " treenode_switch=""></span>
+                    <span id="folder-list-tree_3_my_ico" class="tree_icon button">
+                    <i class="x-item-file x-group-public small"></i>
+                    </span><span id="folder-list-tree_3_span"><?php echo $this->lang->line('System_documents');?></span></a></h3>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <ul id="choosingPathTree" init="0" class="tableUl menuNav level0"></ul>
+                    </div>
+                </div>
+                </li>
+            </ul>
+            <div class="modal-footer">
+                <button type="button" id="choosingPathBtn" class="btn btn-xs btn-xs btn-green" onclick=""><?php echo $this->lang->line('confirm')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出窗口 修改文件夹 end-->
+<div class="zDialog"></div>
+<div class="artDialog">
+    <div class="proTab bc7 dialogShow" id="log">
+        <div class="tab-head bc7">
+                <i class="font-icon icon-globe"></i><span ><?php echo $this->lang->line('log')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        </div>
+        <div id="logContent" class="tab-content"></div>
+    </div>
+    <div class="proTab bcd dialogShow" id="indexCard">
+        <div class="tab-head bcd">
+                <i class="font-icon icon-external-link"></i><span ><?php echo $this->lang->line('indexCard')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        </div>
+        <div id="dmsindexCardImg" ><img src="/statics/images/common/loading.gif"></div>
+        <div id="indexCardContent" class="tab-content" style="display: none"></div>
+    </div>
+    <div class="proTab bc7 dialogShow" id="permission">
+
+        <div class="tab-head bc7">
+                <i class="font-icon"><img draggable="false" class="x-item-file" ondragstart="return false;" src="/statics/images/file_icon/icon_others/setting.png"></i><span ><?php echo $this->lang->line('permission')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        </div>
+        <div id="dmspermissionImg"><img src="/statics/images/common/loading.gif"></div>
+        <div id="permissionContent" class="tab-content" style="display: none">
+            
+        </div>
+    </div>
+    <div class="proTab bc7 dialogShow" id="curl">
+        <div class="tab-head bc7">
+                <i class="font-icon icon-share"></i><span ><?php echo $this->lang->line('share')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span> 
+        </div>
+        <div id="curlContent" class="tab-content"></div>
+    </div>
+    <div class="proTab bc7 dialogShow" id="version">
+        <div class="tab-head bc7">
+                <i class="font-icon"><img draggable="false" class="x-item-file" ondragstart="return false;" src="/statics/images/file_icon/icon_others/version.png"></i><span ><?php echo $this->lang->line('version')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        </div>
+        <div id="versionContent" class="tab-content" style="display: none"></div>
+    </div>
+    <div class="proTab bcd dialogShow" id="detail">
+        <div class="tab-head bcd">
+            <i class="font-icon icon-info"></i><span ><?php echo $this->lang->line('detail')?></span><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span>
+        </div>
+        <div id="dmsDetailEmptyImg"><img src="/statics/images/common/loading.gif"></div>
+        <div id="detailContent" class="tab-content" style="display: none">
+            
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<script type="text/javascript" src="/statics/js/lib/seajs/sea.js"></script> 
+<script type="text/javascript" src="/admin/g/commonjs"></script>
+<script type="application/javascript" src="/static/js/dms/dmsList.js"/></script>
+<script type="application/javascript" src="/static/js/dms/assigneeUser.js"/></script>
+<script src="/static/js/contextMenu/jquery-contextMenu.js"></script>
+<script type="application/javascript" src="/static/js/dms/rightTab.js"/></script>
+<script type="application/javascript" src="/static/js/dms/drag.js"/></script>
+<script type="application/javascript" src="/static/js/dms/curl.js"/></script>
+<script src="/static/js/dms/Favorite.js?ver=<?php echo $version;?>"></script>
+<script type="text/javascript">
+        seajs.config({
+        base: "/statics/js/",
+        preload: [
+            "lib/jquery-1.8.0.min",
+        ],
+        map:[
+            [ /^(.*\.(?:css|js))(.*)$/i,'$1$2']
+        ]
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        var id = '<?php echo $this->input->get('id');?>';
+        var name = '<?php echo $this->input->get('name');?>';
+        commobj.doGet(G.paths+'cession/scurrent', false, function(result) {
+        if (result.code == 200) {
+            var session = result.data;
+            var fullName = session.fullName;
+            var orgName = session.orgName;
+            $("#applyuser").val(orgName);
+            $("#applydepartment").val(fullName);
+            $("#pubname").val(name);
+        } else {
+            window.location.href = G.paths+"home/logout";
+        }
+    });
+    layui.config({
+            dir: '/static/layui/',
+            version: false,
+            debug: false,
+            base: ''
+        });
+        layui.use(['layer', 'laydate'], function() {
+            var layer = layui.layer;
+            var laydate = layui.laydate;
+            laydate.render({
+                elem: '#applyTime',
+                type: 'datetime'
+            });
+        });
+    });    
+    </script>
+<script type="application/javascript" src="/static/js/dms/jquery-confirm.min.js"></script>
+<script type="application/javascript" src="/static/js/dms/dmsUpdate.js"/></script>
+<?php echo '<script type="application/javascript" src="'.$docHost.'/pageoffice.js" id="po_js_main"></script>';?>
+</body>
+</body>
+</html>
